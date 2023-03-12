@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css">
+    <title>Fomulário</title>
+  </head>
+  <body>
+    <h1>Cadastro de pessoas</h1>
+    <form class="form js-form" data-form>
+      <label for="name">
+        Nome
+        <input
+          data-name
+          class="form-field js-field"
+          id="name"
+          maxlength="120"
+          name="name"
+          required
+          type="text"
+        />
+      </label>
+      <label for="birth-date">
+        Data de Nascimento
+        <input
+          data-birth
+          class="form-field js-field"
+          id="birth-date"
+          name="birth-date"
+          required
+          type="date"
+        />
+      </label>
+      <button type="submit">Salvar</button>
+    </form>
+    <script src="script.js"></script>
+  </body>
+</html>
