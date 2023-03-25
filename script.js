@@ -1,58 +1,99 @@
 const form = document.querySelector('[data-form]')
 const formFields = form.querySelectorAll('.js-field')
-const table = document.createElement('table')
-const formPeople = []
+const table = document.querySelector('[data-table]')
+const people = JSON.parse(localStorage.getItem('people')) || []
+
+function createPeopleTable() {
+  if (people.length <= 0) {
+    return
+  }
+
+  table.classList.remove('table-invisible')
+  const tbody = table.querySelector('[data-tbody]')
+  tbody.innerHTML = ''
+  people.forEach(person => {
+    const newTableRow = document.createElement('tr')
+    newTableRow.classList.add('table-row')
+    newTableRow.innerHTML = ` 
+    <td class="table-boby-data" data-table-cell>${person.name}</td>
+    <td class="table-boby-data" data-table-cell>${person['birth-date']}</td>
+    `
+    createEditButton(newTableRow)
+    tbody.appendChild(newTableRow)
+  })
+}
+
+createPeopleTable()
+
+function createEditButton(element) {
+  const tableData = document.createElement('td')
+  tableData.classList.add('table-boby-data')
+  tableData.setAttribute('data-table-cell', '')
+
+  const newButton = document.createElement('button')
+  newButton.classList.add('table-body-button')
+  newButton.setAttribute('data-table-button', '')
+  newButton.addEventListener('click', e => {
+    updatePerson(e.target)
+  })
+  newButton.textContent = 'Editar'
+
+  tableData.appendChild(newButton)
+  element.appendChild(tableData)
+}
 
 form.addEventListener('submit', event => {
   event.preventDefault()
-  const formDataPerson = {}
+
+  const person = {}
+
   formFields.forEach(field => {
     if (field.name === 'birth-date') {
-      formDataPerson[field.name] = formatDate(field.value)
+      person[field.name] = formatDateLocal(field.value)
     } else {
-      formDataPerson[field.name] = field.value
+      person[field.name] = field.value
     }
     field.value = ''
   })
-  formPeople.push(formDataPerson)
-  localStorage.setItem('formDataPeople', JSON.stringify(formPeople))
-  createTableWithFormData()
+
+  people.push(person)
+  localStorage.setItem('people', JSON.stringify(people))
+  createPeopleTable()
 })
 
-function formatDate(date) {
+function formatDateLocal(date) {
   const birthDateObject = new Date(date)
   const stringLocalDateFormated = `${birthDateObject.getDate() + 1}/${
-    birthDateObject.getMonth() + 1
+    (birthDateObject.getMonth() + 1).toString().length <= 1
+      ? '0'+(birthDateObject.getMonth() + 1).toString() 
+      : (birthDateObject.getMonth() + 1).toString()
   }/${birthDateObject.getFullYear()}`
   return stringLocalDateFormated
 }
 
-function createTableWithFormData() {
-  const dataFormPeople =
-    JSON.parse(localStorage.getItem('formDataPeople')) || []
-
-  if (dataFormPeople.length == 0) {
-    return
-  }
-  table.innerHTML = `
-  <thead data-thead>
-    <tr>
-      <th>Nome</th>
-      <th>Data de Nascimento</th>
-    </tr>
-  </thead>
-  <tbody data-tbody>
-  </tbody>
-  `
-  dataFormPeople.forEach(people => {
-    table.querySelector('[data-tbody]').innerHTML += `
-    <tr>
-      <td>${people.name}</td>
-      <td>${people['birth-date']}</td>
-    </tr>
-    `
-    document.body.appendChild(table)
-  })
+function formatDateDefault(dateString) {
+  const dateWithHyphen = dateString.replace(/\/+/g, '-')
+  const dateFormatedToDefault = dateWithHyphen.replace(
+    /(\d\d)-(\d\d)-(\d\d\d\d)/g,
+    '$3-$2-$1'
+  )
+  return dateFormatedToDefault
 }
 
-createTableWithFormData()
+function updatePerson(element) {
+  const tr = element.parentNode.parentNode
+  const tds = tr.children
+  const name = tds[0].textContent
+  const birthDate = tds[1].textContent
+  formFields[0].value = name
+  formFields[1].value = formatDateDefault(birthDate)
+  people.splice(
+    people.findIndex(
+      person => person.name === name && person['birth-date'] === birthDate
+    ),
+    1
+  )
+  localStorage.setItem('people', JSON.stringify(people))
+  createPeopleTable()
+  tr.remove()
+}
