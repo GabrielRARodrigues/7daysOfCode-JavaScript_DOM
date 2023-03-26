@@ -19,6 +19,7 @@ function createPeopleTable() {
     <td class="table-boby-data" data-table-cell>${person['birth-date']}</td>
     `
     createEditButton(newTableRow)
+    createRemoveButton(newTableRow)
     tbody.appendChild(newTableRow)
   })
 }
@@ -37,6 +38,23 @@ function createEditButton(element) {
     updatePerson(e.target)
   })
   newButton.textContent = 'Editar'
+
+  tableData.appendChild(newButton)
+  element.appendChild(tableData)
+}
+
+function createRemoveButton(element) {
+  const tableData = document.createElement('td')
+  tableData.classList.add('table-boby-data')
+  tableData.setAttribute('data-table-cell', '')
+
+  const newButton = document.createElement('button')
+  newButton.classList.add('table-body-button')
+  newButton.setAttribute('data-table-button', '')
+  newButton.addEventListener('click', e => {
+    removePerson(e.target)
+  })
+  newButton.textContent = 'X'
 
   tableData.appendChild(newButton)
   element.appendChild(tableData)
@@ -65,7 +83,7 @@ function formatDateLocal(date) {
   const birthDateObject = new Date(date)
   const stringLocalDateFormated = `${birthDateObject.getDate() + 1}/${
     (birthDateObject.getMonth() + 1).toString().length <= 1
-      ? '0'+(birthDateObject.getMonth() + 1).toString() 
+      ? '0' + (birthDateObject.getMonth() + 1).toString()
       : (birthDateObject.getMonth() + 1).toString()
   }/${birthDateObject.getFullYear()}`
   return stringLocalDateFormated
@@ -97,3 +115,19 @@ function updatePerson(element) {
   createPeopleTable()
   tr.remove()
 }
+
+function removePerson(element) {
+  const tr = element.parentNode.parentNode
+  const tds = tr.children
+  const name = tds[0].textContent
+  const birthDate = tds[1].textContent
+  people.splice(
+    people.findIndex(
+      person => person.name === name && person['birth-date'] === birthDate
+    ),
+    1
+  )
+  localStorage.setItem('people', JSON.stringify(people))
+  tr.remove()
+}
+
