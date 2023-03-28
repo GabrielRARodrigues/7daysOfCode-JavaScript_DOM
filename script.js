@@ -44,6 +44,7 @@ function createEditButton(element, id) {
   const newTableData = createTableCell()
 
   const newButton = createButton()
+  newButton.classList.add('table-edit-button')
   newButton.dataset.tableEditButton = ''
   newButton.dataset.tableEditButtonId = id
   newButton.addEventListener('click', e => {
@@ -60,13 +61,15 @@ function createRemoveButton(element, id) {
   const newTableData = createTableCell()
 
   const newButton = createButton()
+  newButton.classList.add('table-remove-button')
   newButton.dataset.tableRemoveButton = ''
   newButton.dataset.tableRemoveButtonId = id
+
   newButton.addEventListener('click', e => {
     removePerson(e.target.parentNode, id)
   })
 
-  newButton.textContent = 'X'
+  newButton.textContent = 'Deletar'
 
   newTableData.appendChild(newButton)
   element.appendChild(newTableData)

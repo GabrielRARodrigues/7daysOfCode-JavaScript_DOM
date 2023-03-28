@@ -4,52 +4,61 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&family=Montserrat:wght@600&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="style.css" />
     <title>Fomulário</title>
   </head>
   <body>
-    <h1>Cadastro de pessoas</h1>
-    <form class="form js-form" data-form>
-      <label for="name">
-        Nome
-        <input
-          data-name
-          class="form-field js-field"
-          id="name"
-          minlength="3"
-          pattern="\D+"
-          maxlength="120"
-          name="name"
-          required
-          type="text"
-        />
-      </label>
-      <label for="birth-date">
-        Data de Nascimento
-        <input
-          data-birth
-          class="form-field js-field"
-          id="birth-date"
-          name="birth-date"
-          required
-          type="date"
-        />
-      </label>
-      <button type="submit">Salvar</button>
-    </form>
+    <h1 class="title">Cadastro de pessoas</h1>
+    <main>
+      <form class="form js-form" data-form>
+        <label class="label" for="name">
+          Nome
+          <input
+            data-name
+            class="form-field js-field"
+            id="name"
+            minlength="3"
+            pattern="\D+"
+            maxlength="120"
+            name="name"
+            required
+            type="text"
+          />
+        </label>
+        <label class="label" for="birth-date">
+          Data de Nascimento
+          <input
+            data-birth
+            class="form-field js-field"
+            id="birth-date"
+            name="birth-date"
+            required
+            type="date"
+          />
+        </label>
+        <button class="button" type="submit">Salvar</button>
+      </form>
 
-    <table class="table table-invisible" data-table>
-      <thead class="table-head" data-thead>
-        <tr class="table-row">
-          <th class="table-head-header" data-table-header>Name</th>
-          <th class="table-head-header" data-table-header>
-            Data de Nascimento
-          </th>
-        </tr>
-      </thead>
-      <tbody class="table-body" data-tbody>
-      </tbody>
-    </table>
+      <table class="table table-invisible" data-table>
+        <thead class="table-head" data-thead>
+          <tr class="table-row">
+            <th class="table-head-header" data-table-header>Name</th>
+            <th class="table-head-header" data-table-header>
+              Data de Nascimento
+            </th>
+            <th class="table-head-header" data-table-header>Atualizar</th>
+            <th class="table-head-header" data-table-header>Remover</th>
+          </tr>
+        </thead>
+        <tbody class="table-body" data-tbody></tbody>
+      </table>
+    </main>
     <script src="script.js"></script>
   </body>
 </html>
